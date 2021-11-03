@@ -20,27 +20,6 @@ import (
 	"testing"
 )
 
-func TestLibraryOpenAPI(t *testing.T) {
-	var err error
-	// Run protoc and the protoc-gen-openapi plugin to generate an OpenAPI spec.
-	err = exec.Command("protoc",
-		"-I", "../../",
-		"-I", "../../third_party",
-		"-I", "examples",
-		"examples/google/example/library/v1/library.proto",
-		"--openapi_out=.").Run()
-	if err != nil {
-		t.Fatalf("protoc failed: %+v", err)
-	}
-	// Verify that the generated spec matches our expected version.
-	err = exec.Command("diff", "openapi.yaml", "examples/google/example/library/v1/openapi.yaml").Run()
-	if err != nil {
-		t.Fatalf("Diff failed: %+v", err)
-	}
-	// if the test succeeded, clean up
-	os.Remove("openapi.yaml")
-}
-
 func TestBodyMappingOpenAPI(t *testing.T) {
 	var err error
 	// Run protoc and the protoc-gen-openapi plugin to generate an OpenAPI spec.
@@ -76,6 +55,27 @@ func TestMapFieldsOpenAPI(t *testing.T) {
 	}
 	// Verify that the generated spec matches our expected version.
 	err = exec.Command("diff", "openapi.yaml", "examples/tests/mapfields/openapi.yaml").Run()
+	if err != nil {
+		t.Fatalf("Diff failed: %+v", err)
+	}
+	// if the test succeeded, clean up
+	os.Remove("openapi.yaml")
+}
+
+func TestLibraryOpenAPI(t *testing.T) {
+	var err error
+	// Run protoc and the protoc-gen-openapi plugin to generate an OpenAPI spec.
+	err = exec.Command("protoc",
+		"-I", "../../",
+		"-I", "../../third_party",
+		"-I", "examples",
+		"examples/google/example/library/v1/library.proto",
+		"--openapi_out=.").Run()
+	if err != nil {
+		t.Fatalf("protoc failed: %+v", err)
+	}
+	// Verify that the generated spec matches our expected version.
+	err = exec.Command("diff", "openapi.yaml", "examples/google/example/library/v1/openapi.yaml").Run()
 	if err != nil {
 		t.Fatalf("Diff failed: %+v", err)
 	}

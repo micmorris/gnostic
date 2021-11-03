@@ -212,7 +212,7 @@ func (g *OpenAPIv3Generator) buildOperationV3(
 			&v3.ParameterOrReference{
 				Oneof: &v3.ParameterOrReference_Parameter{
 					Parameter: &v3.Parameter{
-						Name:        pathParameter,
+						Name:        strcase.ToLowerCamel(pathParameter),
 						In:          "path",
 						Required:    true,
 						Description: "The " + pathParameter + " id.",
@@ -238,7 +238,7 @@ func (g *OpenAPIv3Generator) buildOperationV3(
 					&v3.ParameterOrReference{
 						Oneof: &v3.ParameterOrReference_Parameter{
 							Parameter: &v3.Parameter{
-								Name:        fieldName,
+								Name:        strcase.ToLowerCamel(fieldName),
 								In:          "query",
 								Description: fieldDescription,
 								Required:    false,
@@ -396,7 +396,7 @@ func itemsItemForReference(xref string) *v3.ItemsItem {
 
 // fullMessageTypeName builds the full type name of a message.
 func fullMessageTypeName(message *protogen.Message) string {
-	return "." + string(message.Desc.ParentFile().Package()) + "." + string(message.Desc.Name())
+	return "." + string(message.Desc.ParentFile().Package()) + "." + strcase.ToLowerCamel(string(message.Desc.Name()))
 }
 
 func (g *OpenAPIv3Generator) responseContentForMessage(outputMessage *protogen.Message) *v3.MediaTypes {
@@ -591,7 +591,7 @@ func (g *OpenAPIv3Generator) addSchemasToDocumentV3(d *v3.Document, file *protog
 		// Add the schema to the components.schema list.
 		d.Components.Schemas.AdditionalProperties = append(d.Components.Schemas.AdditionalProperties,
 			&v3.NamedSchemaOrReference{
-				Name: string(message.Desc.Name()),
+				Name: strcase.ToLowerCamel(string(message.Desc.Name())),
 				Value: &v3.SchemaOrReference{
 					Oneof: &v3.SchemaOrReference_Schema{
 						Schema: &v3.Schema{
