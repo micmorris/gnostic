@@ -2,12 +2,13 @@ module github.com/micmorris/gnostic
 
 go 1.12
 
-replace github.com/google/gnostic => github.com/micmorris/gnostic master
+replace github.com/google/gnostic => github.com/micmorris/gnostic v0.5.8-0.20211103030705-9202d6457904
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815
 	github.com/golang/protobuf v1.5.2
+	github.com/google/gnostic v0.5.6
 	github.com/iancoleman/strcase v0.2.0
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/stoewer/go-strcase v1.2.0

@@ -230,7 +230,7 @@ func (g *OpenAPIv3Generator) buildOperationV3(
 	// Add any unhandled fields in the request message as query parameters.
 	if bodyField != "*" {
 		for _, field := range inputMessage.Fields {
-			fieldName := string(field.Desc.Name())
+			fieldName := strcase.ToLowerCamel(string(field.Desc.Name()))
 			if !contains(coveredParameters, fieldName) {
 				// Get the field description from the comments.
 				fieldDescription := g.filterCommentString(field.Comments.Leading)
@@ -238,7 +238,7 @@ func (g *OpenAPIv3Generator) buildOperationV3(
 					&v3.ParameterOrReference{
 						Oneof: &v3.ParameterOrReference_Parameter{
 							Parameter: &v3.Parameter{
-								Name:        strcase.ToLowerCamel(fieldName),
+								Name:        fieldName,
 								In:          "query",
 								Description: fieldDescription,
 								Required:    false,
@@ -288,7 +288,7 @@ func (g *OpenAPIv3Generator) buildOperationV3(
 		} else {
 			// If body refers to a message field, use that type.
 			for _, field := range inputMessage.Fields {
-				if string(field.Desc.Name()) == bodyField {
+				if strcase.ToLowerCamel(string(field.Desc.Name())) == bodyField {
 					switch field.Desc.Kind() {
 					case protoreflect.StringKind:
 						bodyFieldScalarTypeName = "string"
@@ -583,7 +583,7 @@ func (g *OpenAPIv3Generator) addSchemasToDocumentV3(d *v3.Document, file *protog
 			definitionProperties.AdditionalProperties = append(
 				definitionProperties.AdditionalProperties,
 				&v3.NamedSchemaOrReference{
-					Name:  string(field.Desc.Name()),
+					Name:  strcase.ToLowerCamel(string(field.Desc.Name())),
 					Value: value,
 				},
 			)
