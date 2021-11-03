@@ -2,7 +2,7 @@ module github.com/google/gnostic
 
 go 1.12
 
-replace github.com/google/gnostic => github.com/micmorris/gnostic
+replace github.com/google/gnostic => github.com/micmorris/gnostic master
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
