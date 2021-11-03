@@ -28,6 +28,8 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 
 	v3 "github.com/google/gnostic/openapiv3"
+
+	"github.com/iancoleman/strcase"
 )
 
 const infoURL = "https://github.com/google/gnostic/tree/master/apps/protoc-gen-openapi"
@@ -127,7 +129,7 @@ func (g *OpenAPIv3Generator) addPathsToDocumentV3(d *v3.Document, file *protogen
 			comment := g.filterCommentString(method.Comments.Leading)
 			inputMessage := method.Input
 			outputMessage := method.Output
-			operationID := service.GoName + "_" + method.GoName
+			operationID := method.GoName
 			xt := annotations.E_Http
 			extension := proto.GetExtension(method.Desc.Options(), xt)
 			var path string
@@ -236,7 +238,7 @@ func (g *OpenAPIv3Generator) buildOperationV3(
 					&v3.ParameterOrReference{
 						Oneof: &v3.ParameterOrReference_Parameter{
 							Parameter: &v3.Parameter{
-								Name:        fieldName,
+								Name:        strcase.ToLowerCamel(fieldName),
 								In:          "query",
 								Description: fieldDescription,
 								Required:    false,
@@ -594,6 +596,7 @@ func (g *OpenAPIv3Generator) addSchemasToDocumentV3(d *v3.Document, file *protog
 					Oneof: &v3.SchemaOrReference_Schema{
 						Schema: &v3.Schema{
 							Description: messageDescription,
+							Type: "object",
 							Properties:  definitionProperties,
 						},
 					},
